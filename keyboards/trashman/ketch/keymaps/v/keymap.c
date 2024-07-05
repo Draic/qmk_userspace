@@ -426,7 +426,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     XXXXXXX,KC_KP_0, LCTL(LALT(KC_KP_0)), KC_LGUI, KC_LSFT, KC_TILD, KC_INS , KC_HOME,  KC_UP , KC_END , KC_APP ,     _______     ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
-    _______ ,KC_LALT, KC_SPC , XXXXXXX, XXXXXXX, XXXXXXX, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX,     KC_ENT    ,
+    _______ ,KC_LALT, KC_SPC , LCTL(KC_LGUI), XXXXXXX, XXXXXXX, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX,     KC_ENT    ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,AG_UNDO, AG_CUT , AG_COPY,AG_PASTE, KC_GRV , KC_PGDN, KC_DEL ,  SwitchL  ,  SwitchR  , KC_PSCR,     KC_PAUS   ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
