@@ -115,7 +115,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       // Great Nature Breaking Macro
       // wegen Bug statt f1 erstmal f1 als hexcode für den button. f2 für btn2
       if (record->event.pressed) {
-        SEND_STRING(SS_TAP(f1));
+        SEND_STRING(SS_TAP(X_BTN1));
         _delay_ms(200);
         SEND_STRING(SS_TAP(X_ENTER));
         _delay_ms(350);
@@ -149,9 +149,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case Q1C:
       // Quickcast-Key
       if (record->event.pressed) {
-        SEND_STRING(SS_TAP(f2));
+        SEND_STRING(SS_TAP(X_BTN2));
         _delay_ms(20);
-        SEND_STRING(SS_TAP(f1));
+        SEND_STRING(SS_TAP(X_BTN1));
       }
       break;
     case fliptable:
