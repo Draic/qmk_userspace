@@ -2,6 +2,7 @@
     "userspace_version": "1.0",
     "build_targets": [
         ["thevankeyboards/minivan", "v"],
-        ["trashman/ketch", "v"]
+        ["trashman/ketch", "v"],
+        ["lfkeyboards/lfk78", "v"]
     ]
 }
