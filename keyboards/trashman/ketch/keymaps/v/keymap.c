@@ -291,14 +291,14 @@ const uint32_t PROGMEM unicode_map[] = {
 
 
 //Custom Tapping Term fuer bestimmte Keys
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LOWER_TAB:
-            return 120;
-        default:
-            return TAPPING_TERM;
-    }
-}
+// uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+//         case LOWER_TAB:
+//             return 120;
+//         default:
+//             return TAPPING_TERM;
+//     }
+// }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 

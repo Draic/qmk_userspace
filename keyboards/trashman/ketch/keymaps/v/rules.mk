@@ -4,10 +4,10 @@
 #
 
 #UNICODE_ENABLE = yes        # Unicode
-UNICODE_COMMON = yes
+# UNICODE_COMMON = yes
 UNICODEMAP_ENABLE = yes
 BOOTMAGIC_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 RGBLIGHT_ENABLE = yes       # Enable keyboard RGB underglow
-#DEBOUNCE_TYPE = sym_eager_pk
-#DEBOUNCE = 15
+DEBOUNCE_TYPE = sym_eager_pk
+# DEBOUNCE = 15

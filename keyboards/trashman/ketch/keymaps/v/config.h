@@ -12,13 +12,16 @@
 // #define PRODUCT         Ooze
 // #define DESCRIPTION     Ooze Firmware
 
-#define TAPPING_TERM 200 /*175*/
-#define TAPPING_TERM_PER_KEY
-#define PREVENT_STUCK_MODIFIERS
+// #define TAPPING_TERM 200 /*175*/
+// #define TAPPING_TERM_PER_KEY
+// #define PREVENT_STUCK_MODIFIERS
 #define PERMISSIVE_HOLD
 #define UNICODE_SELECTED_MODES UNICODE_MODE_LINUX
 // #define UNICODE_KEY_LNX
 #define NKRO_DEFAULT_ON true
 
-#endif
+#define QUICK_TAP_TERM 120
+#define QUICK_TAP_TERM_PER_KEY
+// #define FLOW_TAP_TERM 150
 
+#endif
