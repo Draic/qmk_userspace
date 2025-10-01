@@ -20,6 +20,19 @@ void keyboard_post_init_user(void) {
     rgblight_disable_noeeprom();
 }
 
+bool is_flow_tap_key(uint16_t keycode) {
+    if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
+        return false; // Disable Flow Tap on hotkeys.
+    }
+    switch (get_tap_keycode(keycode)) {
+        case KC_TAB:
+        case KC_ENT:
+        case KC_SPC:
+            return true;
+    }
+    return false;
+}
+
 
 
 
