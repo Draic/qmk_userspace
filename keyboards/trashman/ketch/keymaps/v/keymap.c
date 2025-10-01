@@ -14,6 +14,12 @@
 #define _BROWSER 7
 #define _ADJUST 8
 
+#include "rgblight.h"
+
+void keyboard_post_init_user(void) {
+    rgblight_disable_noeeprom();
+}
+
 
 enum custom_keycodes {
     CTRLPNL = SAFE_RANGE,   //Open the control panel on Win10
