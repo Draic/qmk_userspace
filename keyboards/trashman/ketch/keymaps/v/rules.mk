@@ -4,6 +4,7 @@
 #
 
 #UNICODE_ENABLE = yes        # Unicode
+UNICODE_COMMON = yes
 UNICODEMAP_ENABLE = yes
 BOOTMAGIC_ENABLE = yes
 MOUSEKEY_ENABLE = yes

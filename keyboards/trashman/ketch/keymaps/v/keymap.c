@@ -21,6 +21,8 @@ void keyboard_post_init_user(void) {
 }
 
 
+
+
 enum custom_keycodes {
     CTRLPNL = SAFE_RANGE,   //Open the control panel on Win10
     KVM1,
@@ -280,7 +282,7 @@ const uint32_t PROGMEM unicode_map[] = {
 #define RAISE_ENT   LT(_RAISE, KC_ENT)                 // Tap for Enter, Hold for RAISE
 #define LOWER_TAB   LT(_LOWER, KC_TAB)                 // Tab for Tab, hold for LOWER
 #define R_SEM       LT(_RLAYER, KC_SCLN)               // Tab for colon, hold for R-layer
-#define NKRO        MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
+// #define NKRO        MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
 //#define U_LQUO      UC(0x201e)                           // Unicode Anfuehrungszeichen unten
 //#define U_RQUO      UC(0x201c)                           // Unicode Anfuehrungszeichen oben
 //#define U_SSPACE    UC(0x00a0)                           // Unicode no-break space; NBSP
@@ -476,13 +478,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_RLAYER] = LAYOUT_arrow(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
-     X(U_Degr) , meow, surprise , evil, attack, shy, angry, X(Aleph), _______, X(Null), _______,    _______      ,
+     UM(U_Degr) , meow, surprise , evil, attack, shy, angry, UM(Aleph), _______, UM(Null), _______,    _______      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
-    _______ ,fliptable, X(SNEK)  , indifference, crying, _______, _______, X(U_endash), RBPIPEL, RBPIPER, _______,    _______     ,
+    _______ ,fliptable, UM(SNEK)  , indifference, crying, _______, _______, UM(U_endash), RBPIPEL, RBPIPER, _______,    _______     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
-    _______  ,X(U_guilleft), X(U_guilright), _______, _______, _______, _______, X(U_emdash),  RASSIGN  ,  RPIPE  , X(U_DegrC),    _______    ,
+    _______  ,UM(U_guilleft), UM(U_guilright), _______, _______, _______, _______, UM(U_emdash),  RASSIGN  ,  RPIPE  , UM(U_DegrC),    _______    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_RCTL   ,    _______    , _______ ,     _______    ,     X(SPACE)    , _______ ,     _______ ,_______, _______   ),
+    KC_RCTL   ,    _______    , _______ ,     _______    ,     UM(SPACE)    , _______ ,     _______ ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Adjust (Lower + Raise)
@@ -502,7 +504,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
     _______ , KC_F13, KC_F14 , KC_F15 , KC_F16 , KC_F17 , KC_F18 ,  DF(0) , DF(1)  , XXXXXXX, XXXXXXX,    KC_VOLU     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
-    _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  NKRO  , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
+    _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  _______ , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
     _______   ,    _______    , _______ ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
