@@ -50,24 +50,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /* Keymap SETTINGS: Settings Layer
-     * ,---------.  ,-------------------------------------------------------------.  ,-------------.
-     * |    |    |  |LayClr|   |   |   |   |   |   |   |   |  |   |BL-|BL+|BL Togl|  |RGB Tog |Val+|
-     * |---------|  |-------------------------------------------------------------|  |-------------|
-     * |    |    |  |MuMode |   |   |   |   |   |   |   |   |   |   |   |  |LEDTst|  |RGB Mode|Val-|
-     * |---------|  |-------------------------------------------------------------|  `-------------'
+     * ,---------.  ,-------------------------------------------------------------.  ,--------------.
+     * |    |    |  |LayClr|   |   |   |   |   |   |   |   |  |   |BL-|BL+|BL Togl|  |    |    |    |
+     * |---------|  |-------------------------------------------------------------|  |--------------|
+     * |    |    |  |MuMode |   |   |   |   |   |   |   |   |   |   |   |  |LEDTst|  |    |    |    |
+     * |---------|  |-------------------------------------------------------------|  `--------------'
      * |    |    |  |AudTgl   |Hz+|MS+|   |   |   |   |   |   |   |   |   |  RST  |
      * |---------|  |-------------------------------------------------------------|  ,----.
-     * |    |    |  |ClickTgl  |Hz-|MS-|   |   |   |   |MuTgl|  |  |   |Layer Clr |  |Hue+|
+     * |    |    |  |ClickTgl  |Hz-|MS-|   |   |   |   |MuTgl|  |  |   |Layer Clr |  |    |
      * |---------|  |-------------------------------------------------------------------------.
-     * |    |    |  |    |    |    |                         |    |    |     |  |Sat-|Hue-|Sat+|
+     * |    |    |  |    |    |    |                         |    |    |     |  |    |    |    |
      * `---------'  `--------------------------------------------------------'  `--------------'
      */
     [SETTINGS] = LAYOUT(
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, BL_DOWN, BL_UP,   BL_TOGG,          RGB_TOG, RGB_VAI,
-        XXXXXXX, XXXXXXX, MU_NEXT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          RGB_MOD, RGB_VAD,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, BL_DOWN, BL_UP,   BL_TOGG,          XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, MU_NEXT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, AU_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          QK_BOOT,
-        XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MU_TOGG, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          RGB_HUI,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX,          RGB_SAD, RGB_HUD, RGB_SAI
+        XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MU_TOGG, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,          XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX
     )
 };
 

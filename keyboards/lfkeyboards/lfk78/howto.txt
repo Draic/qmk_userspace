@@ -1,0 +1,10 @@
+qmk flash -kb lfkeyboards/lfk78/revc -km v
+
+needs to be used!
+
+
+if lufa complains use
+qmk git-submodule -f
+
+
+Revision C is correct for my board (Rev G)
