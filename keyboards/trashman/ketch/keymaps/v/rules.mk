@@ -11,4 +11,4 @@ MOUSEKEY_ENABLE = yes
 RGBLIGHT_ENABLE = no       # Enable keyboard RGB underglow
 # DEBOUNCE_TYPE = sym_eager_pk
 # DEBOUNCE = 15
-# DEBOUNCE = 8
+DEBOUNCE = 8

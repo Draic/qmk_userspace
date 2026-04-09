@@ -55,7 +55,7 @@ enum custom_keycodes {
     CTRLPNL = SAFE_RANGE,   //Open the control panel on Win10
     KVM1,
     KVM2,
-    recsorcery,
+    // recsorcery,
     SLEEP,
     RESETGC,
     RASSIGN,
@@ -99,11 +99,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING(SS_TAP(X_RCTL)SS_TAP(X_RCTL)SS_TAP(X_2));
       }
       break;
-    case recsorcery:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LCTL)SS_TAP(X_R)SS_UP(X_LGUI)SS_UP(X_LCTL));
-      }
-      break;
+    // case recsorcery:
+    //   if (record->event.pressed) {
+    //     SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LCTL)SS_TAP(X_R)SS_UP(X_LGUI)SS_UP(X_LCTL));
+    //   }
+    //   break;
     case RESETGC:
       // reset graphic controller
       if (record->event.pressed) {
@@ -534,19 +534,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  _______ , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______   ,    AG_SWAP    , AG_NORM ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
+    _______  ,    AG_SWAP    , AG_NORM ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 };
-
+//QK_CLEAR_EEPROM
 
 const uint16_t PROGMEM fn_actions[] = {
 
 };
 
-void persistent_default_layer_set(uint16_t default_layer) {
-  eeconfig_update_default_layer(default_layer);
-  default_layer_set(default_layer);
-};
+// void persistent_default_layer_set(uint16_t default_layer) {
+//   eeconfig_update_default_layer(default_layer);
+//   default_layer_set(default_layer);
+// };
 
 
 /*
