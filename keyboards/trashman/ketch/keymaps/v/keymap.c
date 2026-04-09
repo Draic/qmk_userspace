@@ -28,9 +28,20 @@ bool is_flow_tap_key(uint16_t keycode) {
         // case KC_TAB:
         case KC_ENT:
         case KC_SPC:
+        case KC_RCTL:
             return true;
     }
     return false;
+}
+
+//NKRO State saving so it can be disabled for KVM commands
+bool saved_nkro_state;
+
+uint32_t restore_nkro_state(uint32_t trigger_time, void *cb_arg) {
+    clear_keyboard();
+    keymap_config.nkro = saved_nkro_state;
+
+    return 0;
 }
 
 // uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record,
@@ -79,24 +90,35 @@ enum custom_keycodes {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-    case CTRLPNL:
-      // Open control panel via run command
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_R)SS_UP(X_LGUI));
-        _delay_ms(90);
-        SEND_STRING("control"SS_TAP(X_ENTER));
-      } else {
-        // when keycode CTRLPNL is released
-      }
-      break;
+    // case CTRLPNL:
+    //   // Open control panel via run command
+    //   if (record->event.pressed) {
+    //     SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_R)SS_UP(X_LGUI));
+    //     _delay_ms(90);
+    //     SEND_STRING("control"SS_TAP(X_ENTER));
+    //   } else {
+    //     // when keycode CTRLPNL is released
+    //   }
+    //   break;
     case KVM1:
       if (record->event.pressed) {
+        // Get Current state
+        saved_nkro_state = keymap_config.nkro;
+        // Disable NKRO, type KVM_LEAD_CODE (RCTRL x 2 + Port Number)
+        clear_keyboard();
+        keymap_config.nkro = false;
         SEND_STRING(SS_TAP(X_RCTL)SS_TAP(X_RCTL)SS_TAP(X_1));
+        // Deferr resetting previous NKRO state
+        defer_exec(2000, restore_nkro_state, NULL);
       }
       break;
     case KVM2:
       if (record->event.pressed) {
+        saved_nkro_state = keymap_config.nkro;
+        clear_keyboard();
+        keymap_config.nkro = false;
         SEND_STRING(SS_TAP(X_RCTL)SS_TAP(X_RCTL)SS_TAP(X_2));
+        defer_exec(2000, restore_nkro_state, NULL);
       }
       break;
     // case recsorcery:
@@ -391,7 +413,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_FN] = LAYOUT_arrow(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     KC_TILD,KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,    KC_BSPC      ,
-/*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
+/*|--------`-------`--------`--------`--------`--------`--------`--------KVM1`--------`--------`--------`-----------------|*/
     _______ ,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6, KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC,    _______     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,  KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR,    _______    ,
@@ -466,7 +488,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,AG_UNDO, AG_CUT , AG_COPY,AG_PASTE, KC_GRV , KC_PGDN, KC_DEL ,  SwitchL  ,  SwitchR  , KC_PSCR,     KC_PAUS   ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______   ,    _______    , _______ ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
+    _______   ,    KC_LALT    , KC_LGUI ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Mouse Layer
@@ -528,13 +550,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_ADJUST] = LAYOUT_arrow(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
-    KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, CTRLPNL, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX ,  QK_BOOT ,    KC_MPLY      ,
+    KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX ,  QK_BOOT ,    KC_MPLY      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
     _______ , KC_F13, KC_F14 , KC_F15 , KC_F16 , KC_F17 , KC_F18 ,  DF(0) , DF(1)  , XXXXXXX, XXXXXXX,    KC_VOLU     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  _______ , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______  ,    AG_SWAP    , AG_NORM ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
+    _______  ,    AG_LSWP    , AG_LNRM ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 };
 //QK_CLEAR_EEPROM
