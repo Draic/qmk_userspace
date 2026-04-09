@@ -14,24 +14,39 @@
 #define _BROWSER 7
 #define _ADJUST 8
 
-#include "rgblight.h"
-
-void keyboard_post_init_user(void) {
-    rgblight_disable_noeeprom();
-}
+// #include "rgblight.h"
+//
+// void keyboard_post_init_user(void) {
+//     rgblight_disable_noeeprom();
+// }
 
 bool is_flow_tap_key(uint16_t keycode) {
     if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
         return false; // Disable Flow Tap on hotkeys.
     }
     switch (get_tap_keycode(keycode)) {
-        case KC_TAB:
+        // case KC_TAB:
         case KC_ENT:
         case KC_SPC:
             return true;
     }
     return false;
 }
+
+// uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record,
+//                            uint16_t prev_keycode) {
+//     if (is_flow_tap_key(keycode) && is_flow_tap_key(prev_keycode)) {
+//         switch (keycode) {
+//             case LCTL_T(KC_F):
+//             case RCTL_T(KC_H):
+//                 return FLOW_TAP_TERM - 25;  // Short timeout on these keys.
+//
+//             default:
+//                 return FLOW_TAP_TERM;  // Longer timeout otherwise.
+//         }
+//     }
+//     return 0;  // Disable Flow Tap.
+//                            }
 
 
 
@@ -519,7 +534,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  _______ , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______   ,    _______    , _______ ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
+    _______   ,    AG_SWAP    , AG_NORM ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 };
 
