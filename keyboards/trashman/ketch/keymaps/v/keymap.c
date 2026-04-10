@@ -28,7 +28,6 @@ bool is_flow_tap_key(uint16_t keycode) {
         // case KC_TAB:
         case KC_ENT:
         case KC_SPC:
-        case KC_RCTL:
             return true;
     }
     return false;

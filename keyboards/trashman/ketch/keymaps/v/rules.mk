@@ -10,6 +10,10 @@ BOOTMAGIC_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 RGBLIGHT_ENABLE = no       # Enable keyboard RGB underglow
 DEFERRED_EXEC_ENABLE = yes
+LTO_ENABLE = yes #save space; disable legacy features
+CONSOLE_ENABLE = no
+COMMAND_ENABLE = no
+
 # DEBOUNCE_TYPE = sym_eager_pk
 # DEBOUNCE = 15
 # DEBOUNCE = 8
