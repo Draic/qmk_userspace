@@ -25,7 +25,7 @@ bool is_flow_tap_key(uint16_t keycode) {
         return false; // Disable Flow Tap on hotkeys.
     }
     switch (get_tap_keycode(keycode)) {
-        // case KC_TAB:
+        case KC_TAB:
         case KC_ENT:
         case KC_SPC:
             return true;
