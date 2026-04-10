@@ -291,7 +291,6 @@ const uint32_t PROGMEM unicode_map[] = {
 };
 
 
-
 // Fillers to make layering more clear
 #define _______ KC_TRANSPARENT
 #define XXXXXXX KC_NO

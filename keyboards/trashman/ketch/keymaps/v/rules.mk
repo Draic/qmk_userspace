@@ -3,7 +3,7 @@
 #   the appropriate keymap folder that will get included automatically
 #
 
-#UNICODE_ENABLE = yes        # Unicode
+# UNICODE_ENABLE = yes        # Unicode
 # UNICODE_COMMON = yes
 UNICODEMAP_ENABLE = yes
 BOOTMAGIC_ENABLE = yes
