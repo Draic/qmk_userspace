@@ -25,7 +25,7 @@ bool is_flow_tap_key(uint16_t keycode) {
         return false; // Disable Flow Tap on hotkeys.
     }
     switch (get_tap_keycode(keycode)) {
-        case KC_TAB:
+        // case KC_TAB:
         case KC_ENT:
         case KC_SPC:
             return true;
@@ -304,6 +304,8 @@ const uint32_t PROGMEM unicode_map[] = {
 #define GUI_SEM     GUI_T(KC_SCLN)              // Tap for Semicolon, hold for GUI
 #define GUI_Z       GUI_T(KC_Z)              	// Tap for Z, hold for GUI
 #define GUI_ESC     GUI_T(KC_ESC)              	// Tap for ESC, hold for GUI
+#define LOWER_ESC   LT(_LOWER, KC_ESC)       	// Tap for ESC, hold for LOWER
+
 #define ALT_QUO     MT(MOD_RALT, KC_QUOTE)      // Tap for Quote, hold for Alt
 #define ALT_ENT     MT(MOD_RALT, KC_ENT)        // Tap for Enter, hold for Alt
 // Requires KC_TRNS/_______ for the trigger key in the destination layer
@@ -394,7 +396,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     KC_LSFT  ,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT,   KC_SLSH,   KC_QUOT    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL   , KC_LGUI, KC_LALT, MO(4) ,      KC_SPC     ,      LT_TC      ,  KC_RALT  ,     MO(3) ,_______, MO(8)   ),
+    KC_LCTL   , KC_LGUI, KC_LALT, MO(4) ,      KC_SPC     ,      LT_TC      ,  KC_RALT  ,     MO(3) ,DF(0), MO(8)   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Dvorak
@@ -554,7 +556,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  _______ , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______  ,    AG_LSWP    , AG_LNRM, _______ ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
+    _______  ,    AG_LSWP    , AG_LNRM, _______ ,      _______     ,   Q1C, _______ ,     GRMACRO ,DF(1), _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 };
 //QK_CLEAR_EEPROM
