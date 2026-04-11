@@ -4,9 +4,14 @@
 #
 
 #UNICODE_ENABLE = yes        # Unicode
+#DEBOUNCE_TYPE = sym_eager_pk
+#DEBOUNCE = 15
+
 UNICODEMAP_ENABLE = yes
 BOOTMAGIC_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 RGBLIGHT_ENABLE = no       # Enable keyboard RGB underglow
-#DEBOUNCE_TYPE = sym_eager_pk
-#DEBOUNCE = 15
+DEFERRED_EXEC_ENABLE = yes
+LTO_ENABLE = yes #save space; disable legacy features
+CONSOLE_ENABLE = no
+COMMAND_ENABLE = no

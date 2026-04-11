@@ -14,12 +14,58 @@
 #define _BROWSER 7
 #define _ADJUST 8
 
+// #include "rgblight.h"
+//
+// void keyboard_post_init_user(void) {
+//     rgblight_disable_noeeprom();
+// }
+
+bool is_flow_tap_key(uint16_t keycode) {
+    if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
+        return false; // Disable Flow Tap on hotkeys.
+    }
+    switch (get_tap_keycode(keycode)) {
+        case KC_TAB:
+        case KC_ENT:
+        case KC_SPC:
+            return true;
+    }
+    return false;
+}
+
+//NKRO State saving so it can be disabled for KVM commands
+bool saved_nkro_state;
+
+uint32_t restore_nkro_state(uint32_t trigger_time, void *cb_arg) {
+    clear_keyboard();
+    keymap_config.nkro = saved_nkro_state;
+
+    return 0;
+}
+
+// uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record,
+//                            uint16_t prev_keycode) {
+//     if (is_flow_tap_key(keycode) && is_flow_tap_key(prev_keycode)) {
+//         switch (keycode) {
+//             case LCTL_T(KC_F):
+//             case RCTL_T(KC_H):
+//                 return FLOW_TAP_TERM - 25;  // Short timeout on these keys.
+//
+//             default:
+//                 return FLOW_TAP_TERM;  // Longer timeout otherwise.
+//         }
+//     }
+//     return 0;  // Disable Flow Tap.
+//                            }
+
+
+
 
 enum custom_keycodes {
     CTRLPNL = SAFE_RANGE,   //Open the control panel on Win10
     KVM1,
     KVM2,
-    recsorcery,
+    // recsorcery,
     SLEEP,
     RESETGC,
     RASSIGN,
@@ -43,31 +89,42 @@ enum custom_keycodes {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-    case CTRLPNL:
-      // Open control panel via run command
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_R)SS_UP(X_LGUI));
-        _delay_ms(90);
-        SEND_STRING("control"SS_TAP(X_ENTER));
-      } else {
-        // when keycode CTRLPNL is released
-      }
-      break;
+    // case CTRLPNL:
+    //   // Open control panel via run command
+    //   if (record->event.pressed) {
+    //     SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_R)SS_UP(X_LGUI));
+    //     _delay_ms(90);
+    //     SEND_STRING("control"SS_TAP(X_ENTER));
+    //   } else {
+    //     // when keycode CTRLPNL is released
+    //   }
+    //   break;
     case KVM1:
       if (record->event.pressed) {
+        // Get Current state
+        saved_nkro_state = keymap_config.nkro;
+        // Disable NKRO, type KVM_LEAD_CODE (RCTRL x 2 + Port Number)
+        clear_keyboard();
+        keymap_config.nkro = false;
         SEND_STRING(SS_TAP(X_RCTL)SS_TAP(X_RCTL)SS_TAP(X_1));
+        // Deferr resetting previous NKRO state
+        defer_exec(2000, restore_nkro_state, NULL);
       }
       break;
     case KVM2:
       if (record->event.pressed) {
+        saved_nkro_state = keymap_config.nkro;
+        clear_keyboard();
+        keymap_config.nkro = false;
         SEND_STRING(SS_TAP(X_RCTL)SS_TAP(X_RCTL)SS_TAP(X_2));
+        defer_exec(2000, restore_nkro_state, NULL);
       }
       break;
-    case recsorcery:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LCTL)SS_TAP(X_R)SS_UP(X_LGUI)SS_UP(X_LCTL));
-      }
-      break;
+    // case recsorcery:
+    //   if (record->event.pressed) {
+    //     SEND_STRING(SS_DOWN(X_LGUI)SS_DOWN(X_LCTL)SS_TAP(X_R)SS_UP(X_LGUI)SS_UP(X_LCTL));
+    //   }
+    //   break;
     case RESETGC:
       // reset graphic controller
       if (record->event.pressed) {
@@ -115,7 +172,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       // Great Nature Breaking Macro
       // wegen Bug statt f1 erstmal f1 als hexcode für den button. f2 für btn2
       if (record->event.pressed) {
-        SEND_STRING(SS_TAP(f1));
+        SEND_STRING(SS_TAP(X_BTN1));
         _delay_ms(200);
         SEND_STRING(SS_TAP(X_ENTER));
         _delay_ms(350);
@@ -149,9 +206,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case Q1C:
       // Quickcast-Key
       if (record->event.pressed) {
-        SEND_STRING(SS_TAP(f2));
+        SEND_STRING(SS_TAP(X_BTN2));
         _delay_ms(20);
-        SEND_STRING(SS_TAP(f1));
+        SEND_STRING(SS_TAP(X_BTN1));
       }
       break;
     case fliptable:
@@ -234,7 +291,6 @@ const uint32_t PROGMEM unicode_map[] = {
 };
 
 
-
 // Fillers to make layering more clear
 #define _______ KC_TRANSPARENT
 #define XXXXXXX KC_NO
@@ -274,7 +330,7 @@ const uint32_t PROGMEM unicode_map[] = {
 #define RAISE_ENT   LT(_RAISE, KC_ENT)                 // Tap for Enter, Hold for RAISE
 #define LOWER_TAB   LT(_LOWER, KC_TAB)                 // Tab for Tab, hold for LOWER
 #define R_SEM       LT(_RLAYER, KC_SCLN)               // Tab for colon, hold for R-layer
-#define NKRO        MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
+// #define NKRO        MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
 //#define U_LQUO      UC(0x201e)                           // Unicode Anfuehrungszeichen unten
 //#define U_RQUO      UC(0x201c)                           // Unicode Anfuehrungszeichen oben
 //#define U_SSPACE    UC(0x00a0)                           // Unicode no-break space; NBSP
@@ -283,14 +339,14 @@ const uint32_t PROGMEM unicode_map[] = {
 
 
 //Custom Tapping Term fuer bestimmte Keys
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LOWER_TAB:
-            return 120;
-        default:
-            return TAPPING_TERM;
-    }
-}
+// uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+//         case LOWER_TAB:
+//             return 120;
+//         default:
+//             return TAPPING_TERM;
+//     }
+// }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -308,7 +364,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 
-[_QWERTY] = LAYOUT_arrow(
+[_QWERTY] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     GUI_ESC,   KC_Q,  KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,   KC_I,    KC_O,    KC_P,       KC_BSPC      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
@@ -316,7 +372,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     KC_LSFT  ,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH,    SFT_QUO    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL  ,     KC_LALT,       MO(4) ,     LT_ENT     ,      LT_TC      , KC_RALT ,      MO(3)  ,  MO(1) ,  MO(8))   ,
+    KC_LCTL  , KC_LGUI, KC_LALT,  MO(4) ,     LT_ENT     ,      LT_TC      , KC_RALT ,      MO(3)  ,  MO(1) ,  MO(8))   ,
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Colemak
@@ -330,7 +386,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |   Alt   |   GUI   |  Lower  |    TC/Space    |   TC/Space     |  Raise  |   Vol+  |  Play   |
  *  `--------+---------+---------+------^^^-------+-----^^^--------+---------+---------+---------'
  */
-[_GAMING] = LAYOUT_arrow(
+[_GAMING] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     KC_ESC,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,     KC_BSPC      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
@@ -338,7 +394,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     KC_LSFT  ,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT,   KC_SLSH,   KC_QUOT    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL   ,   KC_LALT     ,   MO(4) ,      KC_SPC     ,      LT_TC      ,  KC_RALT  ,     MO(3) ,_______, MO(8)   ),
+    KC_LCTL   , KC_LGUI, KC_LALT, MO(4) ,      KC_SPC     ,      LT_TC      ,  KC_RALT  ,     MO(3) ,_______, MO(8)   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Dvorak
@@ -352,15 +408,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |   Alt   |   GUI   |  Lower  |    TC/Space    |   TC/Space     |  Raise  |   Vol+  |  Play   |
  *  `--------+---------+---------+------^^^-------+-----^^^--------+---------+---------+---------'
  */
-[_FN] = LAYOUT_arrow(
+[_FN] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     KC_TILD,KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,    KC_BSPC      ,
-/*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
+/*|--------`-------`--------`--------`--------`--------`--------`--------KVM1`--------`--------`--------`-----------------|*/
     _______ ,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6, KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC,    _______     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,  KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR,    _______    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______   ,    _______    , _______ ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
+    _______  , _______ , _______ , _______ ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Lower
@@ -374,7 +430,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  Brite  |         |         |                |                |         |   Vol-  |   Mute  |
  *  `--------+---------+---------+------^^^-------+-----^^^--------+---------+---------+---------'
  */
-[_LOWER] = LAYOUT_arrow(
+[_LOWER] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     KC_TILD,KC_EXLM,  KC_AT , KC_HASH, KC_DLR , KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,    KC_BSPC      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
@@ -382,7 +438,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  , KC_F7 ,  KC_F8 ,  KC_F9 ,  KC_F10,  KC_F11,  KC_F12, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR,    KC_PIPE    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______   ,    _______    , _______ ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
+    _______ , _______ , _______ , _______ ,   _______   ,    _______    , _______ ,     _______ ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Raise
@@ -396,7 +452,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |  Brite  |         |         |                |                |         |   Vol-  |   Mute  |
  *  `--------+---------+---------+------^^^-------+-----^^^--------+---------+---------+---------'
  */
-[_RAISE] = LAYOUT_arrow(
+[_RAISE] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     KC_0   ,  KC_1 ,  KC_2  ,  KC_3  ,  KC_4  ,  KC_5  ,  KC_6  ,  KC_7  ,  KC_8  ,  KC_9  ,  KC_0  ,    KC_BSPC      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
@@ -404,7 +460,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,  KC_7 ,  KC_8  ,  KC_9  ,  KC_0  , KC_MINS,  KC_0  ,  KC_1  ,  KC_2  ,  KC_3  , KC_SLSH,    RALT(KC_5) ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL   ,    _______    , _______ ,     _______    ,     _______     , KC_KP_DOT ,     KC_EQL ,_______, _______   ),
+    KC_LCTL  , _______, _______ , _______ ,     _______    ,     _______     , KC_KP_DOT ,     KC_EQL ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* NAVIGATION layer
@@ -422,15 +478,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * seem to work on Mac. Presumably they'll work under Windows.
  */
 
-[_NAVIGATION] = LAYOUT_arrow(
+[_NAVIGATION] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     XXXXXXX,KC_KP_0, LCTL(LALT(KC_KP_0)), KC_LGUI, KC_LSFT, KC_TILD, KC_INS , KC_HOME,  KC_UP , KC_END , KC_APP ,     _______     ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
-    _______ ,KC_LALT, KC_SPC , XXXXXXX, XXXXXXX, XXXXXXX, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX,     KC_ENT    ,
+    _______ ,KC_LALT, KC_SPC , LCTL(KC_LGUI), XXXXXXX, XXXXXXX, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX,     KC_ENT    ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,AG_UNDO, AG_CUT , AG_COPY,AG_PASTE, KC_GRV , KC_PGDN, KC_DEL ,  SwitchL  ,  SwitchR  , KC_PSCR,     KC_PAUS   ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______   ,    _______    , _______ ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
+    _______ , KC_LALT, KC_LGUI , _______ ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Mouse Layer
@@ -445,7 +501,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *  `--------+---------+---------+------^^^-------+-----^^^--------+---------+---------+---------'
  */
 
-[_BROWSER] = LAYOUT_arrow(
+[_BROWSER] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     _______,LALT(KC_F3),LCTL(KC_W),LCTL(LSFT(KC_TAB)),KC_F5, _______, _______, _______, _______, _______, _______,    _______      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
@@ -453,7 +509,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,LCTL(LALT(KC_LSFT)), _______, LALT(KC_LEFT), LALT(KC_RIGHT), _______, _______, _______, _______, _______, _______,    _______    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______   ,    _______    , _______ ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
+    _______, _______, _______ , _______ ,     _______    ,     _______     , _______ ,     _______ ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Plover layer (http://opensteno.org)
@@ -468,15 +524,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *  `--------+---------+---------+------^^^-------+-----^^^--------+---------+---------+---------'
  */
 
-[_RLAYER] = LAYOUT_arrow(
+[_RLAYER] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
-     X(U_Degr) , meow, surprise , evil, attack, shy, angry, X(Aleph), _______, X(Null), _______,    _______      ,
+     UM(U_Degr) , meow, surprise , evil, attack, shy, angry, UM(Aleph), _______, UM(Null), _______,    _______      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
-    _______ ,fliptable, X(SNEK)  , indifference, crying, _______, _______, X(U_endash), RBPIPEL, RBPIPER, _______,    _______     ,
+    _______ ,fliptable, UM(SNEK)  , indifference, crying, _______, _______, UM(U_endash), RBPIPEL, RBPIPER, _______,    _______     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
-    _______  ,X(U_guilleft), X(U_guilright), _______, _______, _______, _______, X(U_emdash),  RASSIGN  ,  RPIPE  , X(U_DegrC),    _______    ,
+    _______  ,UM(U_guilleft), UM(U_guilright), _______, _______, _______, _______, UM(U_emdash),  RASSIGN  ,  RPIPE  , UM(U_DegrC),    _______    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_RCTL   ,    _______    , _______ ,     _______    ,     X(SPACE)    , _______ ,     _______ ,_______, _______   ),
+    KC_RCTL , _______, _______, _______ ,     _______    ,     UM(SPACE)    , _______ ,     _______ ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Adjust (Lower + Raise)
@@ -490,27 +546,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |         |         |         |                |                |         |         |  Reset  |
  *  `--------+---------+---------+------^^^-------+-----^^^--------+---------+---------+---------'
  */
-[_ADJUST] = LAYOUT_arrow(
+[_ADJUST] = LAYOUT_arrow_command(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
-    KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, CTRLPNL, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX ,  QK_BOOT ,    KC_MPLY      ,
+    KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX ,  QK_BOOT ,    KC_MPLY      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
     _______ , KC_F13, KC_F14 , KC_F15 , KC_F16 , KC_F17 , KC_F18 ,  DF(0) , DF(1)  , XXXXXXX, XXXXXXX,    KC_VOLU     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
-    _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  NKRO  , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
+    _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  _______ , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______   ,    _______    , _______ ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
+    _______  ,    AG_LSWP    , AG_LNRM, _______ ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 };
-
+//QK_CLEAR_EEPROM
 
 const uint16_t PROGMEM fn_actions[] = {
 
 };
 
-void persistent_default_layer_set(uint16_t default_layer) {
-  eeconfig_update_default_layer(default_layer);
-  default_layer_set(default_layer);
-};
+// void persistent_default_layer_set(uint16_t default_layer) {
+//   eeconfig_update_default_layer(default_layer);
+//   default_layer_set(default_layer);
+// };
 
 
 /*
