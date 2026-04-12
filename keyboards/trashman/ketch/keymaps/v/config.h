@@ -21,7 +21,7 @@
 
 // #define TAPPING_TERM 200 /*175*/
 // #define TAPPING_TERM_PER_KEY
-// #define PREVENT_STUCK_MODIFIERS
+#define PREVENT_STUCK_MODIFIERS
 #define PERMISSIVE_HOLD
 // #define HOLD_ON_OTHER_KEY_PRESS
 #define UNICODE_SELECTED_MODES UNICODE_MODE_LINUX//, UNICODE_MODE_MACOS //linux unicode needs Fcitx5: sudo pacman -S fcitx5 fcitx5-qt fcitx5-gtk   # Arch
