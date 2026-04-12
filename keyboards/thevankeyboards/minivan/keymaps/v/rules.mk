@@ -6,6 +6,7 @@
 #UNICODE_ENABLE = yes        # Unicode
 #DEBOUNCE_TYPE = sym_eager_pk
 #DEBOUNCE = 15
+DEBOUNCE = 8
 
 UNICODEMAP_ENABLE = yes
 BOOTMAGIC_ENABLE = yes
