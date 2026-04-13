@@ -26,7 +26,8 @@
 // #define HOLD_ON_OTHER_KEY_PRESS
 #define UNICODE_SELECTED_MODES UNICODE_MODE_LINUX//, UNICODE_MODE_MACOS //linux unicode needs Fcitx5: sudo pacman -S fcitx5 fcitx5-qt fcitx5-gtk   # Arch
 
-#define NKRO_DEFAULT_ON true
+// #define NKRO_DEFAULT_ON true
+#define NKRO_DEFAULT_ON false
 
 // #define QUICK_TAP_TERM 120
 // #define QUICK_TAP_TERM_PER_KEY

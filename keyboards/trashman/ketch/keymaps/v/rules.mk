@@ -8,11 +8,12 @@
 UNICODEMAP_ENABLE = yes
 BOOTMAGIC_ENABLE = yes
 MOUSEKEY_ENABLE = yes
-RGBLIGHT_ENABLE = no       # Enable keyboard RGB underglow
+RGBLIGHT_ENABLE = yes       # Enable keyboard RGB underglow
 DEFERRED_EXEC_ENABLE = yes
 LTO_ENABLE = yes #save space; disable legacy features
 CONSOLE_ENABLE = no
 COMMAND_ENABLE = no
+NKRO_ENABLED = no
 
 # DEBOUNCE_TYPE = sym_eager_pk
 # DEBOUNCE = 15

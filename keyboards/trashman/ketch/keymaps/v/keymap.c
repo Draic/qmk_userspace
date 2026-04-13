@@ -14,11 +14,11 @@
 #define _BROWSER 7
 #define _ADJUST 8
 
-// #include "rgblight.h"
-//
-// void keyboard_post_init_user(void) {
-//     rgblight_disable_noeeprom();
-// }
+#include "rgblight.h"
+
+void keyboard_post_init_user(void) {
+    rgblight_disable_noeeprom();
+}
 
 bool is_flow_tap_key(uint16_t keycode) {
     if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
