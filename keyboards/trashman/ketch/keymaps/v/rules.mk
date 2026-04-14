@@ -13,7 +13,10 @@ DEFERRED_EXEC_ENABLE = yes
 LTO_ENABLE = yes #save space; disable legacy features
 CONSOLE_ENABLE = no
 COMMAND_ENABLE = no
-NKRO_ENABLED = no
+NKRO_ENABLE = no
+FORCE_NKRO = no
+
+KEYBOARD_SHARED_EP = yes 	#for KC_Globe Apple Key
 
 # DEBOUNCE_TYPE = sym_eager_pk
 # DEBOUNCE = 15

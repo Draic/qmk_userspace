@@ -31,7 +31,9 @@
 
 // #define QUICK_TAP_TERM 120
 // #define QUICK_TAP_TERM_PER_KEY
-#define FLOW_TAP_TERM 150
+// #define FLOW_TAP_TERM 150
+
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 
 #define USB_POLLING_INTERVAL_MS 10  //default is 1 I think; KVM related workaround to prevent stuck keys
 

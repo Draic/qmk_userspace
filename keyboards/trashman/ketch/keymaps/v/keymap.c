@@ -20,17 +20,28 @@ void keyboard_post_init_user(void) {
     rgblight_disable_noeeprom();
 }
 
-bool is_flow_tap_key(uint16_t keycode) {
-    if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
-        return false; // Disable Flow Tap on hotkeys.
-    }
-    switch (get_tap_keycode(keycode)) {
-        // case KC_TAB:
-        case KC_ENT:
-        case KC_SPC:
+// bool is_flow_tap_key(uint16_t keycode) {
+//     if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
+//         return false; // Disable Flow Tap on hotkeys.
+//     }
+//     switch (get_tap_keycode(keycode)) {
+//         case KC_TAB:
+//         case KC_ENT:
+//         case KC_SPC:
+//             return true;
+//     }
+//     return false;
+// }
+
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(_LOWER, KC_TAB):
+            // Immediately select the hold action when another key is pressed.
             return true;
+        default:
+            // Do not select the hold action when another key is pressed.
+            return false;
     }
-    return false;
 }
 
 //NKRO State saving so it can be disabled for KVM commands
@@ -38,8 +49,8 @@ bool saved_nkro_state;
 
 uint32_t restore_nkro_state(uint32_t trigger_time, void *cb_arg) {
     clear_keyboard();
-    keymap_config.nkro = saved_nkro_state;
-
+    // keymap_config.nkro = saved_nkro_state; //saving disabled
+    keymap_config.nkro = false; //fix nkro off for now due to KVM
     return 0;
 }
 
@@ -84,7 +95,9 @@ enum custom_keycodes {
     indifference,
     shy,
     crying,
-    angry
+    angry,
+    // apple globe key
+    KC_GLOBE
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -256,6 +269,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         send_unicode_string("•̀o•́");
       }
       break;
+    case KC_GLOBE:
+        host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
+      return false;
   }
   return true;
 };
@@ -310,7 +326,6 @@ const uint32_t PROGMEM unicode_map[] = {
 #define LT_TC       LT(_NAVIGATION, KC_SPC)    // L-ayer T-ap T-ouch C-ursor
 #define SPC_RAISE   LT(_RAISE, KC_SPC			// Tap Space, Hold for Raise
 #define LT_ENT      LT(_BROWSER, KC_ENT)    // L-ayer T-ap T-ouch C-ursor
-#define LT_MC(kc)   LT(_BROWSER, kc)        // L-ayer T-ap M-ouse C-ursor
 #define ALT_TAB     KC_NO//M(KC_ALT_TAB)               // Macro for Alt-Tab
 #define CMD_TAB     KC_NO//M(KC_CMD_TAB)               // Macro for Cmd-Tab
 #define CTL_TAB     KC_NO//M(KC_CTL_TAB)               // Macro for Ctl-Tab
@@ -331,11 +346,6 @@ const uint32_t PROGMEM unicode_map[] = {
 #define LOWER_TAB   LT(_LOWER, KC_TAB)                 // Tab for Tab, hold for LOWER
 #define R_SEM       LT(_RLAYER, KC_SCLN)               // Tab for colon, hold for R-layer
 // #define NKRO        MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
-//#define U_LQUO      UC(0x201e)                           // Unicode Anfuehrungszeichen unten
-//#define U_RQUO      UC(0x201c)                           // Unicode Anfuehrungszeichen oben
-//#define U_SSPACE    UC(0x00a0)                           // Unicode no-break space; NBSP
-//#define U_SHYPH     UC(0x00ad)                           // Unicode soft hyphen
-
 
 
 //Custom Tapping Term fuer bestimmte Keys
@@ -368,11 +378,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     GUI_ESC,   KC_Q,  KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,   KC_I,    KC_O,    KC_P,       KC_BSPC      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
-    LOWER_TAB,  KC_A,  KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,   KC_K,    KC_L,    R_SEM, LT(_RAISE,KC_ENT),
+    LOWER_TAB,  KC_A,  KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,   KC_K,    KC_L,    R_SEM,     RAISE_ENT    ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     KC_LSFT  ,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH,    SFT_QUO    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL  ,     KC_LALT,       MO(4) ,     LT_ENT     ,      LT_TC      , KC_RALT ,      MO(3)  ,  MO(1) ,  MO(8))   ,
+    KC_LCTL  ,     KC_LALT,       MO(4) ,     RAISE_ENT     ,      LT_TC      , KC_RALT ,      MO(3)  ,  MO(1) ,  MO(8))   ,
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Colemak
@@ -460,7 +470,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,  KC_7 ,  KC_8  ,  KC_9  ,  KC_0  , KC_MINS,  KC_0  ,  KC_1  ,  KC_2  ,  KC_3  , KC_SLSH,    RALT(KC_5) ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL   ,    _______    , _______ ,     _______    ,     _______     , KC_KP_DOT ,     KC_EQL ,_______, _______   ),
+    KC_LCTL   ,    _______    , KC_LGUI ,     _______    ,     _______     , KC_KP_DOT ,     KC_EQL ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* NAVIGATION layer
@@ -482,7 +492,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     XXXXXXX,KC_KP_0, LCTL(LALT(KC_KP_0)), KC_LGUI, KC_LSFT, KC_TILD, KC_INS , KC_HOME,  KC_UP , KC_END , KC_APP ,     _______     ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
-    _______ ,KC_LALT, KC_SPC , LCTL(KC_LGUI), XXXXXXX, XXXXXXX, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX,     KC_ENT    ,
+    _______ ,_______, KC_SPC , LCTL(KC_LGUI), XXXXXXX, XXXXXXX, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX,     KC_ENT    ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  ,AG_UNDO, AG_CUT , AG_COPY,AG_PASTE, KC_GRV , KC_PGDN, KC_DEL ,  SwitchL  ,  SwitchR  , KC_PSCR,     KC_PAUS   ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
@@ -530,7 +540,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
     _______ ,fliptable, UM(SNEK)  , indifference, crying, _______, _______, UM(U_endash), RBPIPEL, RBPIPER, _______,    _______     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
-    _______  ,UM(U_guilleft), UM(U_guilright), _______, _______, _______, _______, UM(U_emdash),  RASSIGN  ,  RPIPE  , UM(U_DegrC),    _______    ,
+    KC_GLOBE  ,UM(U_guilleft), UM(U_guilright), _______, _______, _______, _______, UM(U_emdash),  RASSIGN  ,  RPIPE  , UM(U_DegrC),    _______    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
     KC_RCTL   ,    _______    , _______ ,     _______    ,     UM(SPACE)    , _______ ,     _______ ,_______, _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
