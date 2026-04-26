@@ -14,11 +14,11 @@
 #define _BROWSER 7
 #define _ADJUST 8
 
-#include "rgblight.h"
-
-void keyboard_post_init_user(void) {
-    rgblight_disable_noeeprom();
-}
+// #include "rgblight.h"
+//
+// void keyboard_post_init_user(void) {
+//     rgblight_disable_noeeprom();
+// }
 
 // bool is_flow_tap_key(uint16_t keycode) {
 //     if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
@@ -404,7 +404,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     KC_LSFT  ,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT,   KC_SLSH,   KC_QUOT    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL   ,   KC_LALT     ,   MO(4) ,      KC_SPC     ,      LT_TC      ,  KC_RALT  ,     MO(3) ,_______, MO(8)   ),
+    KC_LCTL   ,   KC_LALT     ,   MO(4) ,      KC_SPC     ,      LT_TC      ,  KC_RALT  ,     MO(3),  DF(0) , MO(8)   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Dvorak
@@ -560,11 +560,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
     KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX ,  QK_BOOT ,    KC_MPLY      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
-    _______ , KC_F13, KC_F14 , KC_F15 , KC_F16 , KC_F17 , KC_F18 ,  DF(0) , DF(1)  , XXXXXXX, XXXXXXX,    KC_VOLU     ,
+    _______ , KC_F13, KC_F14 , KC_F15 , KC_F16 , KC_F17 , KC_F18 ,  XXXXXXX , XXXXXXX  , XXXXXXX, XXXXXXX,    KC_VOLU     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  _______ , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______  ,    AG_LSWP    , AG_LNRM ,      _______     ,   Q1C, _______ ,     GRMACRO ,_______, _______   ),
+    _______  ,    AG_LSWP    , AG_LNRM ,      _______     ,   Q1C, _______ ,     GRMACRO ,   DF(1),    _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 };
 //QK_CLEAR_EEPROM
