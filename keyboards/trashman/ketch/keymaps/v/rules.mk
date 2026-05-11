@@ -20,4 +20,4 @@ KEYBOARD_SHARED_EP = yes 	#for KC_Globe Apple Key
 
 # DEBOUNCE_TYPE = sym_eager_pk
 # DEBOUNCE = 15
-# DEBOUNCE = 8
+DEBOUNCE = 8
