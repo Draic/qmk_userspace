@@ -345,7 +345,7 @@ const uint32_t PROGMEM unicode_map[] = {
 #define RAISE_ENT   LT(_RAISE, KC_ENT)                 // Tap for Enter, Hold for RAISE
 #define LOWER_TAB   LT(_LOWER, KC_TAB)                 // Tab for Tab, hold for LOWER
 #define R_SEM       LT(_RLAYER, KC_SCLN)               // Tab for colon, hold for R-layer
-// #define NKRO        MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
+#define NKRO        MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
 
 
 //Custom Tapping Term fuer bestimmte Keys
@@ -558,7 +558,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_ADJUST] = LAYOUT_arrow(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
-    KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX ,  QK_BOOT ,    KC_MPLY      ,
+    KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  NKRO ,  QK_BOOT ,    KC_MPLY      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
     _______ , KC_F13, KC_F14 , KC_F15 , KC_F16 , KC_F17 , KC_F18 ,  XXXXXXX , XXXXXXX  , XXXXXXX, XXXXXXX,    KC_VOLU     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
