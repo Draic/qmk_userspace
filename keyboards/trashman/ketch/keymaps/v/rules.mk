@@ -8,7 +8,7 @@
 UNICODEMAP_ENABLE = yes
 BOOTMAGIC_ENABLE = yes
 MOUSEKEY_ENABLE = yes
-RGBLIGHT_ENABLE = no       # Enable keyboard RGB underglow
+RGBLIGHT_ENABLE = yes       # Enable keyboard RGB underglow
 DEFERRED_EXEC_ENABLE = yes
 LTO_ENABLE = yes #save space; disable legacy features
 CONSOLE_ENABLE = no
@@ -20,4 +20,4 @@ KEYBOARD_SHARED_EP = yes 	#for KC_Globe Apple Key
 
 # DEBOUNCE_TYPE = sym_eager_pk
 # DEBOUNCE = 15
-DEBOUNCE = 8
+DEBOUNCE = 10

@@ -5,14 +5,15 @@
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 #define _QWERTY 0
-#define _GAMING 1
-#define _FN 2
-#define _LOWER 3
-#define _RAISE 4
-#define _RLAYER 5
-#define _NAVIGATION 6
-#define _BROWSER 7
-#define _ADJUST 8
+#define _MAC 1
+#define _GAMING 2
+#define _FN 3
+#define _LOWER 4
+#define _RAISE 5
+#define _RLAYER 6
+#define _NAVIGATION 7
+#define _BROWSER 8
+#define _ADJUST 9
 
 // #include "rgblight.h"
 //
@@ -345,7 +346,7 @@ const uint32_t PROGMEM unicode_map[] = {
 #define RAISE_ENT   LT(_RAISE, KC_ENT)                 // Tap for Enter, Hold for RAISE
 #define LOWER_TAB   LT(_LOWER, KC_TAB)                 // Tab for Tab, hold for LOWER
 #define R_SEM       LT(_RLAYER, KC_SCLN)               // Tab for colon, hold for R-layer
-// #define NKRO        MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
+#define NKRO        QK_MAGIC_TOGGLE_NKRO                  //Switch NKRO on/off
 
 
 //Custom Tapping Term fuer bestimmte Keys
@@ -382,7 +383,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     KC_LSFT  ,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH,    SFT_QUO    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL  ,     KC_LALT,       MO(4) ,     RAISE_ENT     ,      LT_TC      , KC_RALT ,      MO(3)  ,  MO(1) ,  MO(8))   ,
+    KC_LCTL  ,     KC_LALT,       MO(5) ,     RAISE_ENT     ,      LT_TC      , KC_RALT ,      MO(4)  ,  MO(2) ,  MO(9))   ,
+/*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
+
+[_MAC] = LAYOUT_arrow(
+/*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
+    QK_GESC,   KC_Q,  KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,   KC_I,    KC_O,    KC_P,       KC_BSPC      ,
+/*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
+    LOWER_TAB,  KC_A,  KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,   KC_K,    KC_L,    R_SEM,     RAISE_ENT    ,
+/*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
+    KC_LSFT  ,   KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH,    SFT_QUO    ,
+/*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
+    KC_LCTL  ,     KC_LALT,      KC_LGUI ,     RAISE_ENT     ,      LT_TC      , KC_RALT ,      MO(4)  ,  DF(0) ,  MO(9))   ,
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Colemak
@@ -404,7 +416,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     KC_LSFT  ,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT,   KC_SLSH,   KC_QUOT    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    KC_LCTL   ,   KC_LALT     ,   MO(4) ,      KC_SPC     ,      LT_TC      ,  KC_RALT  ,     MO(3),  DF(0) , MO(8)   ),
+    KC_LCTL   ,   KC_LALT     ,   MO(5) ,      KC_SPC     ,      LT_TC      ,  KC_RALT  ,     MO(4),  DF(0) , MO(9)   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 
 /* Dvorak
@@ -558,13 +570,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_ADJUST] = LAYOUT_arrow(
 /*,--------+-------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------.*/
-    KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX ,  QK_BOOT ,    KC_MPLY      ,
+    KC_GRV ,LCTL(LALT(KC_F1)), LCTL(LALT(KC_F2)), KVM1, KVM2, XXXXXXX, XXXXXXX, GRMACRO, XXXXXXX,  NKRO ,  QK_BOOT ,    KC_MPLY      ,
 /*|--------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`-----------------|*/
     _______ , KC_F13, KC_F14 , KC_F15 , KC_F16 , KC_F17 , KC_F18 ,  XXXXXXX , XXXXXXX  , XXXXXXX, XXXXXXX,    KC_VOLU     ,
 /*|---------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`----------------|*/
     _______  , KC_F19, KC_F20 , KC_F21 , KC_F22 , KC_F23 , KC_F24 ,  _______ , KC_MPRV, KC_MNXT, KC_MUTE,    KC_VOLD    ,
 /*|----------`-------`--------`--------`--------`--------`--------`--------`--------`--------`--------`---------------|*/
-    _______  ,    AG_LSWP    , AG_LNRM ,      _______     ,   Q1C, _______ ,     GRMACRO ,   DF(1),    _______   ),
+    _______  ,    AG_LSWP    , AG_LNRM ,      _______     ,   Q1C, _______ ,     DF(1) ,   DF(2),    _______   ),
 /*`-----------+---------------+---------+-------^^^------+-------^^^-------+---------+-----------------+--------------'*/
 };
 //QK_CLEAR_EEPROM
